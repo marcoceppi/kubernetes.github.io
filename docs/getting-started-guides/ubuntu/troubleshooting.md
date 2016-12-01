@@ -1,3 +1,6 @@
+* TOC
+{:toc}
+
 # Troubleshooting
 
 ## Debug Action

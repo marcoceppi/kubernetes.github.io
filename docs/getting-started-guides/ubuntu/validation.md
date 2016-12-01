@@ -1,4 +1,5 @@
-
+* TOC
+{:toc}
 
 # Validation
 
@@ -17,11 +18,9 @@ users do, when unit and integration tests are insufficient.
 
 ### Usage
 
-To deploy the end-to-end test suite, it is best to deploy the
-[kubernetes-core bundle](https://github.com/juju-solutions/bundle-kubernetes-core)
-and then relate the `kubernetes-e2e` charm.
+To deploy the end-to-end test suite, you need to relate the `kubernetes-e2e` charm to your existing kubernetes-master nodes and easyrsa:
 
-```shell
+```
 juju deploy kubernetes-core
 juju deploy kubernetes-e2e
 juju add-relation kubernetes-e2e kubernetes-master
@@ -36,9 +35,8 @@ Once the relations have settled, you can do `juju status` until the workload sta
 The e2e test is encapsulated as an action to ensure consistent runs of the
 end to end test. The defaults are sensible for most deployments.
 
-```shell
-juju run-action kubernetes-e2e/0 test
-```
+    juju run-action kubernetes-e2e/0 test
+
 
 ### Tuning the e2e test
 
@@ -48,8 +46,11 @@ This allows the operator to test only a subset of the conformance tests, or to
 test more behaviors not enabled by default. You can see all tunable options on
 the charm by inspecting the schema output of the actions:
 
-```shell
-$ juju actions kubernetes-e2e --format=yaml --schema
+    juju actions kubernetes-e2e --format=yaml --schema
+
+Output: 
+
+```
 test:
   description: Run end-to-end validation test suite
   properties:
@@ -73,9 +74,7 @@ As an example, you can run a more limited set of tests for rapid validation of
 a deployed cluster. The following example will skip the `Flaky`, `Slow`, and
 `Feature` labeled tests:
 
-```shell
-juju run-action kubernetes-e2e/0 skip='\[(Flaky|Slow|Feature:.*)\]'
-```
+    juju run-action kubernetes-e2e/0 skip='\[(Flaky|Slow|Feature:.*)\]'
 
 > Note: the escaping of the regex due to how bash handles brackets.
 
@@ -104,21 +103,32 @@ times taking **greater than 1 hour**, depending on configuration.
 
 ##### Flat file
 
-```shell
-$ juju run-action kubernetes-e2e/0 test
-Action queued with id: 4ceed33a-d96d-465a-8f31-20d63442e51b
+Here's how to copy the output out as a file: 
 
-$ juju scp kubernetes-e2e/0:4ceed33a-d96d-465a-8f31-20d63442e51b.log .
-```
+    juju run-action kubernetes-e2e/0 test
+
+Output:
+
+    Action queued with id: 4ceed33a-d96d-465a-8f31-20d63442e51b
+
+Copy output to your local machine
+
+    juju scp kubernetes-e2e/0:4ceed33a-d96d-465a-8f31-20d63442e51b.log .
 
 ##### Action result output
 
-```shell
-$ juju run-action kubernetes-e2e/0 test
-Action queued with id: 4ceed33a-d96d-465a-8f31-20d63442e51b
+Or you can just show the output inline::
 
-$ juju show-action-output 4ceed33a-d96d-465a-8f31-20d63442e51b
-```
+    juju run-action kubernetes-e2e/0 test
+
+Output:
+
+    Action queued with id: 4ceed33a-d96d-465a-8f31-20d63442e51b
+
+Show the results in your terminal: 
+
+    juju show-action-output 4ceed33a-d96d-465a-8f31-20d63442e51b
+
 
 ### Known issues
 
@@ -127,3 +137,12 @@ images from `gcr.io`. You will need to have this registry unblocked in your
 firewall to successfully run e2e test results. Or you may use the exposed
 proxy settings [properly configured](https://github.com/juju-solutions/bundle-canonical-kubernetes#proxy-configuration)
 on the kubernetes-worker units.
+
+## Upgrading the e2e tests
+
+The e2e tests are always expanding, you can see if there's an upgrade available by running `juju status kubernetes-e2e`. 
+
+When an upgrade is available, upgrade your deployment:
+
+    juju upgrade-charm kubernetes-e2e
+

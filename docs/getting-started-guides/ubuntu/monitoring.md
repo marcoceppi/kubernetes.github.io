@@ -1,3 +1,6 @@
+* TOC
+{:toc}
+
 # Monitoring
 
 ## Connecting Prometheus

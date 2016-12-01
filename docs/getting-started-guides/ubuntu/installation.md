@@ -5,6 +5,9 @@ assignees:
 
 ---
 
+* TOC
+{:toc}
+
 Ubuntu 16.04 introduced the [Canonical Distribution of Kubernetes](https://jujucharms.com/canonical-kubernetes/), a pure upstream distribution of Kubernetes designed for production usage. Out of the box it comes with the following components on 12 machines:
 
 - Kubernetes (automated deployment, operations, and scaling)
@@ -19,32 +22,25 @@ Ubuntu 16.04 introduced the [Canonical Distribution of Kubernetes](https://jujuc
        to the requesting units of the cluster.
 - Etcd (distributed key value store)
      - Three unit cluster for reliability.
-- Elastic stack
-     - Two units for ElasticSearch
-     - One units for a Kibana dashboard
-     - Beats on every Kubernetes and Etcd units:
-          - Filebeat for forwarding logs to ElasticSearch
-          - Topbeat for inserting server monitoring data to ElasticSearch
-
 
 The Juju Kubernetes work is curated by a dedicated team of community members,
 let us know how we are doing. If you find any problems please open an
 [issue on our tracker](https://github.com/juju-solutions/bundle-canonical-kubernetes)
 so we can find them.
 
-* TOC
-{:toc}
-
 ## Prerequisites
 
 - A working [Juju client](https://jujucharms.com/docs/2.0/getting-started-general); this does not have to be a Linux machine, it can also be Windows or OSX.
 - A [supported cloud](#cloud-compatibility).
+  - Bare Metal deployments are supported via [MAAS](http://maas.io). Refer to the [MAAS documentation](http://maas.io/docs/) for configuration instructions.
+  - OpenStack deployments are currently only tested on Mitaka and newer.
+
 
 ### On Ubuntu
 
 On your local Ubuntu system:  
 
-```shell
+```
 sudo add-apt-repository ppa:juju/stable
 sudo apt-get update
 sudo apt-get install juju
@@ -54,9 +50,9 @@ If you are using another distro/platform - please consult the
 [getting started guide](https://jujucharms.com/docs/2.0/getting-started-general)
 to install the Juju dependencies for your platform. 
 
-### Configure Juju to your favorite cloud provider
+### Configure Juju to use your cloud provider
 
-Deployment of the cluster is [supported on a wide variety of public clouds](#cloud-compatibility), private OpenStack clouds, or raw bare metal clusters.  
+Deployment of the cluster is [supported on a wide variety of public clouds](#cloud-compatibility), private OpenStack clouds, or raw bare metal clusters. Bare metal deployments are supported via [MAAS](http://maas.io/).
 
 After deciding which cloud to deploy to, follow the [cloud setup page](https://jujucharms.com/docs/devel/getting-started-general#2.-choose-a-cloud) to configure deploying to that cloud. 
 
@@ -65,7 +61,7 @@ cloud provider you would like to use.
 
 In this example
 
-```shell
+```
 juju add-credential aws 
 credential name: my_credentials
 select auth-type [userpass, oauth, etc]: userpass
@@ -77,7 +73,7 @@ You can also just auto load credentials for popular clouds with the `juju autolo
 
 Next we need to bootstrap a controller to manage the cluster. You need to define the cloud you want to bootstrap on, the region, and then any name for your controller node:   
 
-```shell
+```
 juju update-clouds # This command ensures all the latest regions are up to date on your client
 juju bootstrap aws/us-east-2 
 ```
@@ -93,21 +89,23 @@ Note that each controller can host multiple Kubernetes clusters in a given cloud
 
 ## Launch a Kubernetes cluster
 
-The following command will deploy the intial 12-node starter cluster. The speed of execution is very dependent of the performance of the cloud you're deploying to, but 
+The following command will deploy the initial 12-node starter cluster. The speed of execution is very dependent of the performance of the cloud you're deploying to: 
 
-```shell
+```
 juju deploy canonical-kubernetes
 ```
 
-After this command executes we need to wait for the cloud to return back instances and for all the automated deployment tasks to execute. 
+After this command executes the cloud will then launch instances and begin the deployment process. 
 
 ## Monitor deployment
 
-The `juju status` command provides information about each unit in the cluster. We recommend using the `watch -c juju status --color` command to get a real-time view of the cluster as it deploys. When all the states are green and "Idle", the cluster is ready to go. 
-   
+The `juju status` command provides information about each unit in the cluster. Use the `watch -c juju status --color` command to get a real-time view of the cluster as it deploys. When all the states are green and "Idle", the cluster is ready to be used:
 
-```shell
-$ juju status 
+    juju status
+
+Output: 
+
+``` 
 Model    Controller     Cloud/Region   Version
 default  aws-us-east-2  aws/us-east-2  2.0.1
 
@@ -167,16 +165,16 @@ Machine  State    DNS            Inst id              Series  AZ
 
 After the cluster is deployed you may assume control over the cluster from any kubernetes-master, or kubernetes-worker node.
 
-First we need to download the credentials and client application to your local workstation:
+First you need to download the credentials and client application to your local workstation:
 
 Create the kubectl config directory.
 
-```shell
+```
 mkdir -p ~/.kube
 ```
 Copy the kubeconfig file to the default location.
 
-```shell
+```
 juju scp kubernetes-master/0:config ~/.kube/config
 ```
 
@@ -184,14 +182,17 @@ Fetch a binary for the architecture you have deployed. If your client is a
 different architecture you will need to get the appropriate `kubectl` binary
 through other means.
 
-```shell
+```
 juju scp kubernetes-master/0:kubectl ./kubectl
 ```
 
-Query the cluster.
+Query the cluster:
 
-```shell
-./kubectl cluster-info
+    ./kubectl cluster-info
+
+Output: 
+
+```
 Kubernetes master is running at https://52.15.104.227:443
 Heapster is running at https://52.15.104.227:443/api/v1/proxy/namespaces/kube-system/services/heapster
 KubeDNS is running at https://52.15.104.227:443/api/v1/proxy/namespaces/kube-system/services/kube-dns
@@ -201,57 +202,9 @@ InfluxDB is running at https://52.15.104.227:443/api/v1/proxy/namespaces/kube-sy
 
 Congratulations, you've now set up a Kubernetes cluster!  
 
-## Scale up cluster
-
-Want larger Kubernetes nodes? It is easy to request different sizes of cloud
-resources from Juju by using **constraints**. You can increase the amount of
-CPU or memory (RAM) in any of the systems requested by Juju. This allows you
-to fine tune th Kubernetes cluster to fit your workload. Use flags on the
-bootstrap command or as a separate `juju constraints` command. Look to the
-[Juju documentation for machine](https://jujucharms.com/docs/2.0/charms-constraints)
-details.
-
-## Scale out cluster
-
-Need more workers? We just add more units:    
-
-```shell
-juju add-unit kubernetes-worker
-```
-
-Or multiple units at one time:  
-
-```shell
-juju add-unit -n3 kubernetes-worker
-```
-You can also ask for specific instance types or other machine-specific constraints. See the [constraints documentation](https://jujucharms.com/docs/stable/reference-constraints) for more information. Here are some examples, note that generic constraints such as `cores` and `mem` are more portable between clouds. In this case we'll ask for a specific instance type from AWS: 
-
-```shell
-juju set-constraints kubernetes-worker instance-type=c4.large
-juju add-unit kubernetes-worker
-```
-
-You can also scale the etcd charm for more fault tolerant key/value storage:  
-
-```shell
-juju add-unit -n3 etcd
-```
-It is strongly recommended to run an odd number of units for quorum. 
-
-## Tear down cluster
-
-If you want stop the servers you can destroy the Juju model or the
-controller. Use the `juju switch` command to get the current controller name:  
-
-```shell
-juju switch
-juju destroy-controller $controllername --destroy-all-models
-```
-This will shutdown and terminate all running instances on that cloud. 
-
 ## More Info
 
-We stand up Kubernetes with open-source operations, or operations as code, known as charms. These charms are assembled from layers which keeps the code smaller and more focused on the operations of just Kubernetes and its components.
+The Ubuntu Kubernetes deployment uses open-source operations, or operations as code, known as charms. These charms are assembled from layers which keeps the code smaller and more focused on the operations of just Kubernetes and its components.
 
 The Kubernetes layer and bundles can be found in the `kubernetes`
 project on github.com:  
@@ -262,27 +215,18 @@ project on github.com:
 
 Feature requests, bug reports, pull requests or any feedback would be much appreciated. 
 
-### Cloud compatibility
-
-This deployment methodology is continually tested on the following clouds:
-
-[Amazon Web Service](https://jujucharms.com/docs/2.0/help-aws),
-[Microsoft Azure](https://jujucharms.com/docs/2.0/help-azure),
-[Google Compute Engine](https://jujucharms.com/docs/2.0/help-google),
-[Joyent](https://jujucharms.com/docs/2.0/help-joyent),
-[Rackspace](https://jujucharms.com/docs/2.0/help-rackspace), any
-[OpenStack cloud](https://jujucharms.com/docs/2.0/clouds#specifying-additional-clouds),
-and
-[Vmware vSphere](https://jujucharms.com/docs/2.0/config-vmware).
-
 ## Support Level
-
 
 IaaS Provider        | Config. Mgmt | OS     | Networking  | Docs                                              | Conforms | Support Level
 -------------------- | ------------ | ------ | ----------  | ---------------------------------------------     | ---------| ----------------------------
-Amazon Web Services (AWS)   | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/juju)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
-OpenStack                   | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/juju)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
-Microsoft Azure             | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/juju)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
-Google Compute Engine (GCE) | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/juju)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
+Amazon Web Services (AWS)   | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
+OpenStack                   | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
+Microsoft Azure             | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
+Google Compute Engine (GCE) | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
+Joyent                      | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
+Rackspace                   | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
+VMWare vSphere              | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
+Bare Metal (MAAS)           | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
+
 
 For support level information on all solutions, see the [Table of solutions](/docs/getting-started-guides/#table-of-solutions) chart.

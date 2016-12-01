@@ -1,3 +1,6 @@
+* TOC
+{:toc}
+
 # Decommissioning
 
 Warning: By the time you've reached this step you should have backed up your workloads and pertinent data, this section is for the complete destruction of a cluster. 
