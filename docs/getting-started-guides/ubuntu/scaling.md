@@ -12,6 +12,12 @@ watch -c juju status --color
 
 ## Kubernetes masters
 
+The provided Kubernetes master nodes act as a control plane for the cluster. The deployment has been designed so that these nodes can be scaled independently of worker nodes to allow for more operational flexibility. To scale a master node up, simply execute:
+
+    juju add-unit kubernetes-master
+
+This will add another master node to the control plane. See the [building high-availability clusters](http://kubernetes.io/docs/admin/high-availability) section of the documentation for more information. 
+
 ## Kubernetes workers
 
 The kubernetes-worker nodes are the load-bearing units of a Kubernetes cluster.

@@ -33,8 +33,11 @@ so we can find them.
 - A working [Juju client](https://jujucharms.com/docs/2.0/getting-started-general); this does not have to be a Linux machine, it can also be Windows or OSX.
 - A [supported cloud](#cloud-compatibility).
   - Bare Metal deployments are supported via [MAAS](http://maas.io). Refer to the [MAAS documentation](http://maas.io/docs/) for configuration instructions.
-  - OpenStack deployments are currently only tested on Mitaka and newer.
-
+  - OpenStack deployments are currently only tested on Icehouse and newer.
+- Network access to the following domains
+  - *.jujucharms.com
+  - gcr.io 
+  - Access to an Ubuntu mirror (public or private)
 
 ### On Ubuntu
 

@@ -42,7 +42,8 @@ juju add-relation nrpe kubeapi-load-balancer
 
 If you already have an exisiting Nagios installation, the `nrpe-external-master` charm can be used instead. This will allow you to supply configuration options mapping your exisiting external Nagios installation to NRPE.
 
-
 ## Connecting Elastic stack
+
 ## Connecting Datadog
+
 ## Connecting Sysdig

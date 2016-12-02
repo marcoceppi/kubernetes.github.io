@@ -83,12 +83,12 @@ Review the final summary screen:
 You can access your Kubernetes cluster by running the following:
     
     
-    $ ~/kubectl --kubeconfig=~/.kube/config
+    ~/kubectl --kubeconfig=~/.kube/config
     
 
 Or if you've already run this once it'll create a new config file as shown in the summary screen.
     
     
-    $ ~/kubectl --kubeconfig=~/.kube/config.conjure-up
+    ~/kubectl --kubeconfig=~/.kube/config.conjure-up
     
 
