@@ -18,6 +18,7 @@ Supports AWS, GCE, Azure, Joyent, OpenStack, Bare Metal and local workstation de
   - [Scaling](/docs/getting-started-guides/ubuntu/scaling)
   - [Logging](/docs/getting-started-guides/ubuntu/installation)
   - [Monitoring](/docs/getting-started-guides/ubuntu/monitoring)
+  - Networking  
   - [Security](/docs/getting-started-guides/ubuntu/security)
   - [Storage](/docs/getting-started-guides/ubuntu/storage)
   - [Troubleshooting](/docs/getting-started-guides/ubuntu/troubleshooting)
