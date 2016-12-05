@@ -5,11 +5,11 @@
 
 ## Exporting cluster data
 
-TBD 
+Exporting of cluster data is not supported at this time. 
 
 ## Restoring cluster data
 
-TBD
+Importing of cluster data is not supported at this time. 
 
 ## Exporting etcd data
 
