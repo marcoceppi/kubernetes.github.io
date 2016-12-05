@@ -5,8 +5,6 @@
 
 This document with highlighting how to troubleshoot the deployment of a Kubernetes cluster, it will not cover debugging of workloads inside Kubernetes. 
 
-## Debug Action
-
 ## Understanding Cluster Status
 
 Using `juju status` can give you some insight as to what's happening in a cluster:
@@ -62,6 +60,44 @@ Will automatically ssh you to the 3rd worker unit.
     juju ssh easyrsa/0 
 
 This will automatically ssh you to the easyrsa unit. 
+
+## Collecting Debug information
+
+Sometimes it is useful to collect all the information from a node to share with a developer so problems can be identifying. This section will deal on how to use the debug action to collect this information. The debug action is only supported on `kubernetes-worker` nodes.
+
+    juju run-action kubernetes-worker/0 debug
+
+Which returns:
+    
+
+```
+Action queued with id: 4b26e339-7366-4dc7-80ed-255ac0377020`
+```
+
+This produces a .tar.gz file which you can retrieve:
+
+    juju show-action-output 4b26e339-7366-4dc7-80ed-255ac0377020
+
+This will give you the path for the debug results:
+
+```
+results:
+  command: juju scp debug-test/0:/home/ubuntu/debug-20161110151539.tar.gz .
+  path: /home/ubuntu/debug-20161110151539.tar.gz
+status: completed
+timing:
+  completed: 2016-11-10 15:15:41 +0000 UTC
+  enqueued: 2016-11-10 15:15:38 +0000 UTC
+  started: 2016-11-10 15:15:40 +0000 UTC
+```
+
+You can now copy the results to your local machine: 
+
+    juju scp kubernetes-worker/0:/home/ubuntu/debug-20161110151539.tar.gz .
+
+The archive includes basic information such as systemctl status, Juju logs,
+charm unit data, etc. Additional application-specific information may be
+included as well.
 
 ## Common Problems
 
