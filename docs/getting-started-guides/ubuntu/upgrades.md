@@ -11,11 +11,7 @@ You should always back up all your data before attempting an upgrade. Don't forg
 
 See if upgrades are available. The Kubernetes charms are updated bi-monthly and mentioned in the Kubernetes release notes. Important operational considerations and change in behaviour will always be documented in the release notes. 
 
-You can use `juju status` to see if an upgrade is available.
-
-     put output here
-
-There will either be an upgrade to kubernetes or etcd, or both.
+You can use `juju status` to see if an upgrade is available. There will either be an upgrade to kubernetes or etcd, or both.
 
 # Upgrade etcd
 
