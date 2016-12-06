@@ -21,12 +21,6 @@ Backing up etcd requires an export and snapshot, refer to the [backup documentat
 
 This will handle upgrades between minor versions of etcd. Major upgrades from etcd 2.x to 3.x are currently unsupported. Upgrade viability will be investigated when etcd 3.0 is finalized.
 
-# Upgrade Flannel
-
-Upgrading flannel can be done at any time, it is independent of Kubernetes upgrades. Be advised that networking is interrupted during the upgrade. You can initiate a flannel upgrade:
-
-    juju upgrade-charm flannel
-
 # Upgrade Kubernetes
 
 ## Master Upgrades
@@ -70,6 +64,18 @@ Tear down old workers with:
 `kubectl version` should return the newer version. 
 
 It is recommended to rerun a [cluster validation](/docs/getting-started-guides/ubuntu/validation) to ensure that the cluster upgrade has successfully completed.
+
+# Upgrade Flannel
+
+Upgrading flannel can be done at any time, it is independent of Kubernetes upgrades. Be advised that networking is interrupted during the upgrade. You can initiate a flannel upgrade:
+
+    juju upgrade-charm flannel
+
+# Upgrade easyrsa
+
+Upgrading easyrsa can be done at any time, it is independent of Kubernetes upgrades. Upgrading easyrsa should result in zero downtime as it is not a running service:
+
+    juju upgrade-charm easyrsa
 
 ## Rolling back etcd
 
