@@ -3,13 +3,13 @@
 
 There are multiple ways to run a Kubernetes with Ubuntu.
 
-### Official Ubuntu Guides
+## Official Ubuntu Guides
 
-- [The Canonical Distribution of Kubernetes](/docs/getting-started-guides/automated)
+- [The Canonical Distribution of Kubernetes](/docs/getting-started-guides/ubuntu)
 
 Supports AWS, GCE, Azure, Joyent, OpenStack, Bare Metal and local workstation deployment.
 
-#### Operational Guides  
+### Operational Guides  
 
   - [Installation](/docs/getting-started-guides/ubuntu/installation)
   - [Validation](/docs/getting-started-guides/ubuntu/validation)
@@ -24,17 +24,19 @@ Supports AWS, GCE, Azure, Joyent, OpenStack, Bare Metal and local workstation de
   - [Troubleshooting](/docs/getting-started-guides/ubuntu/troubleshooting)
   - [Decommissioning](/docs/getting-started-guides/ubuntu/decommissioning)
 
-#### Developer Guides
+## Developer Guides
 
   - [Local development using LXD](/docs/getting-started-guides/ubuntu/local)
 
 
-### Community Ubuntu Guides
+## Community Ubuntu Guides
 
 - [Manual Installation](/docs/getting-started-guides/ubuntu/manual)
 - [Calico Configuration](/docs/getting-started-guides/ubuntu/calico)
 
-### Where to find us
+Please feel free to submit guides to this section. 
+
+## Where to find us
 
 We're normally paying attention in the Slack channels: 
 
