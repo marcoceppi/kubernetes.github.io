@@ -33,7 +33,7 @@ NOTE: Always upgrade the masters before the workers.
 
 ## Worker Upgrades
 
-Two methods of upgrading workers are supported. [Blue/Green Deployment](http://martinfowler.com/bliki/BlueGreenDeployment.html) and upgrade-in-place. Both methods are provided for operational flexibility and both are supported and tested. Blue/Green will require more hardware up front than inplace, but is a safer upgrade route.  
+Two methods of upgrading workers are supported. [Blue/Green Deployment](http://martinfowler.com/bliki/BlueGreenDeployment.html) and upgrade-in-place. Both methods are provided for operational flexibility and both are supported and tested. Blue/Green will require more hardware up front than inplace, but is a safer upgrade route.
 
 ## Blue/Green Upgrade 
 
@@ -61,8 +61,9 @@ Tear down old workers with:
 
 # Verify upgrade
 
-- `kubectl cluster-info` should return the newer version. 
-- It is recommended to rerun a [cluster validation](/docs/getting-started-guides/ubuntu/validation) to ensure that the cluster upgrade has successfully completed.
+`kubectl version` should return the newer version. 
+
+It is recommended to rerun a [cluster validation](/docs/getting-started-guides/ubuntu/validation) to ensure that the cluster upgrade has successfully completed.
 
 ## Rolling back etcd
 
@@ -71,4 +72,3 @@ At this time rolling back etcd is unsupported.
 ## Rolling back Kubernetes
 
 At this time rolling back Kubernetes is unsupported.
-
