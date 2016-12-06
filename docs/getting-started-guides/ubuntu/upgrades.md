@@ -15,11 +15,17 @@ You can use `juju status` to see if an upgrade is available. There will either b
 
 # Upgrade etcd
 
-Backiung up etcd requires an export and snapshot, refer to the [backup documentation](/docs/getting-started-guides/ubuntu/backups) to create a snapshot. After the snapshot upgrade the etcd service with:  
+Backing up etcd requires an export and snapshot, refer to the [backup documentation](/docs/getting-started-guides/ubuntu/backups) to create a snapshot. After the snapshot upgrade the etcd service with:  
 
     juju upgrade-charm etcd
 
-This will handle upgrades between minor versions of etcd. Major upgrades from etcd 2.x to 3.x are currently unsupported. Upgrade viability will be investigated when etcd 3.0 is finalized. 
+This will handle upgrades between minor versions of etcd. Major upgrades from etcd 2.x to 3.x are currently unsupported. Upgrade viability will be investigated when etcd 3.0 is finalized.
+
+# Upgrade Flannel
+
+Upgrading flannel can be done at any time, it is independent of Kubernetes upgrades. Be advised that networking is interrupted during the upgrade. You can initiate a flannel upgrade:
+
+    juju upgrade-charm flannel
 
 # Upgrade Kubernetes
 
