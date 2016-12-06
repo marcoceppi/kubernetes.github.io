@@ -65,15 +65,14 @@ Tear down old workers with:
 
 # Verify upgrade
 
-kubectl cluster-info
-Run e2e again
+- `kubectl cluster-info` should return the newer version. 
+- It is recommended to rerun a [cluster validation](/docs/getting-started-guides/ubuntu/validation) to ensure that the cluster upgrade has successfully completed.
 
 ## Rolling back etcd
 
-At this time rolling back etcd is unsupported
+At this time rolling back etcd is unsupported.
 
 ## Rolling back Kubernetes
 
-At this time rolling back Kubernetes is unsupported
+At this time rolling back Kubernetes is unsupported.
 
-## Following trunk Kubernetes for testing
