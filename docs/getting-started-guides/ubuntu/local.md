@@ -54,29 +54,27 @@ Initiate the installation with:
 
 For this walkthrough we are going to create a new controller, select the `localhost` Cloud type:
 
-TODO: Host pictures. 
-
-![][3]
+![Select Cloud](/images/docs/ubuntu/00-select-cloud.png)
 
 Deploy the applications:
 
-![][4]
+![Deploy Applications](/images/docs/ubuntu/01-deploy.png)
 
 Wait for Juju bootstrap to finish:
 
-![][5]
+![Bootstrap](/images/docs/ubuntu/02-bootstrap.png)
 
 Wait for our Applications to be fully deployed:
 
-![][6]
+![Waiting](/images/docs/ubuntu/03-waiting.png)
 
 Run the final post processing steps to automatically configure your Kubernetes environment:
 
-![][7]
+![Postprocessing](/images/docs/ubuntu/04-postprocessing.png)
 
 Review the final summary screen:
 
-![][8]
+!Final Summary](/images/docs/ubuntu/05-final-summary.png)
 
 ### Accessing the Cluster 
 
