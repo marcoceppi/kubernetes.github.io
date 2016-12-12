@@ -21,7 +21,6 @@ users do, when unit and integration tests are insufficient.
 To deploy the end-to-end test suite, you need to relate the `kubernetes-e2e` charm to your existing kubernetes-master nodes and easyrsa:
 
 ```
-juju deploy kubernetes-core
 juju deploy kubernetes-e2e
 juju add-relation kubernetes-e2e kubernetes-master
 juju add-relation kubernetes-e2e easyrsa
