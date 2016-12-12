@@ -13,9 +13,9 @@ Importing of cluster data is not supported at this time.
 
 ## Exporting etcd data
 
-Migrating Etcd is a fairly easy task. The process is mostly copy/pasteable.
+Migrating ETCD is a fairly easy task.
 
-Step 1: Snapshot your existing cluster. This is encapsuluted in the `snapshot`
+Step 1: Snapshot your existing cluster. This is encapsulated in the `snapshot`
 action.
 
     juju run-action etcd/0 snapshot
@@ -27,10 +27,10 @@ Action queued with id: b46d5d6f-5625-4320-8cda-b611c6ae580c
 ```
 
 Step 2: check the status of the action so you can grab the snapshot and verify
-the sum. The copy.cmd result ouput is a copy/paste command for you to download
+the sum. The copy.cmd result output is a copy/paste command for you to download
 the exact snapshot that you just created.
 
-Download the snapshot tarball from the unit that created the snapshot and verify
+Download the snapshot archive from the unit that created the snapshot and verify
 the sha256 sum
 
     juju show-action-output b46d5d6f-5625-4320-8cda-b611c6ae580c
@@ -55,7 +55,7 @@ Copy the snapshot to the local disk and then check the sha256sum.
     sha256sum etcd-snapshot-2016-11-09-02.41.47.tar.gz
 ```
 
-Step 3: Deploy the new cluster leader, and attach the snapshot
+Step 3: Deploy the new cluster leader, and attach the snapshot:
 
 ```
 juju deploy etcd new-etcd --resource snapshot=./etcd-snapshot-2016-11-09-02.41.47.tar.gz
@@ -76,15 +76,11 @@ comes with caveats and a very specific path to restore a cluster:
 The cluster must be in a state of only having a single member. So it's best to
 deploy a new cluster using the etcd charm, without adding any additional units.
 
-```
-juju deploy etcd new-etcd
-```
+    juju deploy etcd new-etcd
 
 > The above code snippet will deploy a single unit of etcd, as 'new-etcd'
 
-```
-juju run-action etcd/0 restore target=/mnt/etcd-backups
-```
+    juju run-action etcd/0 restore target=/mnt/etcd-backups
 
 Once the restore action has completed, evaluate the cluster health. If the unit
 is healthy, you may resume scaling the application to meet your needs.
@@ -98,9 +94,7 @@ is healthy, you may resume scaling the application to meet your needs.
 Allows the operator to snapshot a running clusters data for use in cloning,
 backing up, or migrating Etcd clusters.
 
-```
-juju run-action etcd/0 snapshot target=/mnt/etcd-backups
-```
+    juju run-action etcd/0 snapshot target=/mnt/etcd-backups
 
 - **param** target: destination directory to save the resulting snapshot archive.
 
