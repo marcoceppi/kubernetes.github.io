@@ -18,9 +18,11 @@ Migrating Etcd is a fairly easy task. The process is mostly copy/pasteable.
 Step 1: Snapshot your existing cluster. This is encapsuluted in the `snapshot`
 action.
 
-```
-$ juju run-action etcd/0 snapshot
+    juju run-action etcd/0 snapshot
 
+Results:
+
+```
 Action queued with id: b46d5d6f-5625-4320-8cda-b611c6ae580c
 ```
 
@@ -31,8 +33,11 @@ the exact snapshot that you just created.
 Download the snapshot tarball from the unit that created the snapshot and verify
 the sha256 sum
 
+    juju show-action-output b46d5d6f-5625-4320-8cda-b611c6ae580c
+
+Results:
+
 ```
-$ juju show-action-output b46d5d6f-5625-4320-8cda-b611c6ae580c
 results:
   copy:
     cmd: juju scp etcd/0:/home/ubuntu/etcd-snapshots/etcd-snapshot-2016-11-09-02.41.47.tar.gz
@@ -43,9 +48,11 @@ results:
     size: 68K
 status: completed
 
-$ juju scp etcd/0:/home/ubuntu/etcd-snapshots/etcd-snapshot-2016-11-09-02.41.47.tar.gz .
+Copy the snapshot to the local disk and then check the sha256sum. 
 
-$ sha256sum etcd-snapshot-2016-11-09-02.41.47.tar.gz
+```
+    juju scp etcd/0:/home/ubuntu/etcd-snapshots/etcd-snapshot-2016-11-09-02.41.47.tar.gz .
+    sha256sum etcd-snapshot-2016-11-09-02.41.47.tar.gz
 ```
 
 Step 3: Deploy the new cluster leader, and attach the snapshot
