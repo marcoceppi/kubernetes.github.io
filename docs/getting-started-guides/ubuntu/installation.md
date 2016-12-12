@@ -8,7 +8,7 @@ assignees:
 * TOC
 {:toc}
 
-Ubuntu 16.04 introduced the [Canonical Distribution of Kubernetes](https://www.ubuntu.com/cloud/kubernetes), a pure upstream distribution of Kubernetes designed for production usage. Out of the box it comes with the following components on 7 machines:
+Ubuntu 16.04 introduced the [Canonical Distribution of Kubernetes](https://www.ubuntu.com/cloud/kubernetes), a pure upstream distribution of Kubernetes designed for production usage. Out of the box it comes with the following components on 9 machines:
 
 - Kubernetes (automated deployment, operations, and scaling)
      - Three node Kubernetes cluster with one master and two worker nodes.
@@ -100,11 +100,8 @@ default  aws-us-east-2  aws/us-east-2  2.0.1
 
 App                    Version  Status       Scale  Charm                  Store       Rev  OS      Notes
 easyrsa                3.0.1    active           1  easyrsa                jujucharms    3  ubuntu  
-elasticsearch                   active           2  elasticsearch          jujucharms   19  ubuntu  
 etcd                   2.2.5    active           3  etcd                   jujucharms   14  ubuntu  
-filebeat                        active           4  filebeat               jujucharms    5  ubuntu  
 flannel                0.6.1    maintenance      4  flannel                jujucharms    5  ubuntu  
-kibana                          active           1  kibana                 jujucharms   15  ubuntu  
 kubeapi-load-balancer  1.10.0   active           1  kubeapi-load-balancer  jujucharms    3  ubuntu  exposed
 kubernetes-master      1.4.5    active           1  kubernetes-master      jujucharms    6  ubuntu  
 kubernetes-worker      1.4.5    active           3  kubernetes-worker      jujucharms    8  ubuntu  exposed
@@ -112,37 +109,24 @@ topbeat                         active           3  topbeat                jujuc
 
 Unit                      Workload     Agent  Machine  Public address  Ports            Message
 easyrsa/0*                active       idle   0        52.15.95.92                      Certificate Authority connected.
-elasticsearch/0*          active       idle   1        52.15.67.111    9200/tcp         Ready
-elasticsearch/1           active       idle   2        52.15.109.132   9200/tcp         Ready
 etcd/0                    active       idle   3        52.15.79.127    2379/tcp         Healthy with 3 known peers.
 etcd/1*                   active       idle   4        52.15.111.66    2379/tcp         Healthy with 3 known peers. (leader)
 etcd/2                    active       idle   5        52.15.144.25    2379/tcp         Healthy with 3 known peers.
-kibana/0*                 active       idle   6        52.15.57.157    80/tcp,9200/tcp  ready
 kubeapi-load-balancer/0*  active       idle   7        52.15.84.179    443/tcp          Loadbalancer ready.
 kubernetes-master/0*      active       idle   8        52.15.106.225   6443/tcp         Kubernetes master services ready.
-  filebeat/3              active       idle            52.15.106.225                    Filebeat ready.
-  flannel/3               maintenance  idle            52.15.106.225                    Installing flannel.
+  flannel/3               active       idle            52.15.106.225                    Flannel subnet 10.1.48.1/24
 kubernetes-worker/0*      active       idle   9        52.15.153.246                    Kubernetes worker running.
-  filebeat/2              active       idle            52.15.153.246                    Filebeat ready.
   flannel/2               active       idle            52.15.153.246                    Flannel subnet 10.1.53.1/24
-  topbeat/2               active       idle            52.15.153.246                    Topbeat ready.
 kubernetes-worker/1       active       idle   10       52.15.52.103                     Kubernetes worker running.
-  filebeat/0*             active       idle            52.15.52.103                     Filebeat ready.
   flannel/0*              active       idle            52.15.52.103                     Flannel subnet 10.1.31.1/24
-  topbeat/0*              active       idle            52.15.52.103                     Topbeat ready.
 kubernetes-worker/2       active       idle   11       52.15.104.181                    Kubernetes worker running.
-  filebeat/1              active       idle            52.15.104.181                    Filebeat ready.
   flannel/1               active       idle            52.15.104.181                    Flannel subnet 10.1.83.1/24
-  topbeat/1               active       idle            52.15.104.181                    Topbeat ready.
 
 Machine  State    DNS            Inst id              Series  AZ
 0        started  52.15.95.92    i-06e66414008eca61c  xenial  us-east-2c
-1        started  52.15.67.111   i-050cbd7eb35fa0fe6  trusty  us-east-2a
-2        started  52.15.109.132  i-069196660db07c2f6  trusty  us-east-2b
 3        started  52.15.79.127   i-0038186d2c5103739  xenial  us-east-2b
 4        started  52.15.111.66   i-0ac66c86a8ec93b18  xenial  us-east-2a
 5        started  52.15.144.25   i-078cfe79313d598c9  xenial  us-east-2c
-6        started  52.15.57.157   i-09fd16d9328105ec0  trusty  us-east-2a
 7        started  52.15.84.179   i-00fd70321a51b658b  xenial  us-east-2c
 8        started  52.15.106.225  i-0109a5fc942c53ed7  xenial  us-east-2b
 9        started  52.15.153.246  i-0ab63e34959cace8d  xenial  us-east-2b
@@ -208,14 +192,21 @@ Feature requests, bug reports, pull requests or any feedback would be much appre
 
 IaaS Provider        | Config. Mgmt | OS     | Networking  | Docs                                              | Conforms | Support Level
 -------------------- | ------------ | ------ | ----------  | ---------------------------------------------     | ---------| ----------------------------
-Amazon Web Services (AWS)   | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
-OpenStack                   | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
-Microsoft Azure             | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
-Google Compute Engine (GCE) | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
-Joyent                      | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
-Rackspace                   | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
-VMWare vSphere              | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
-Bare Metal (MAAS)           | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
+Amazon Web Services (AWS)   | Juju         | Ubuntu | flannel, calico*     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Commercial](https://ubuntu.com/cloud/kubernetes), [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
+OpenStack                   | Juju         | Ubuntu | flannel, calico     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Commercial](http
+s://ubuntu.com/cloud/kubernetes), [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
+Microsoft Azure             | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Commercial](http
+s://ubuntu.com/cloud/kubernetes), [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
+Google Compute Engine (GCE) | Juju         | Ubuntu | flannel, calico     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Commercial](http
+s://ubuntu.com/cloud/kubernetes), [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
+Joyent                      | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Commercial](http
+s://ubuntu.com/cloud/kubernetes), [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
+Rackspace                   | Juju         | Ubuntu | flannel     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Commercial](http
+s://ubuntu.com/cloud/kubernetes), [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
+VMWare vSphere              | Juju         | Ubuntu | flannel, calico     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Commercial](http
+s://ubuntu.com/cloud/kubernetes), [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
+Bare Metal (MAAS)           | Juju         | Ubuntu | flannel, calico     | [docs](/docs/getting-started-guides/ubuntu)                                   |          | [Commercial](http
+s://ubuntu.com/cloud/kubernetes), [Community](https://github.com/juju-solutions/bundle-kubernetes-core) ( [@mbruzek](https://github.com/mbruzek), [@chuckbutler](https://github.com/chuckbutler) )
 
 
 For support level information on all solutions, see the [Table of solutions](/docs/getting-started-guides/#table-of-solutions) chart.
