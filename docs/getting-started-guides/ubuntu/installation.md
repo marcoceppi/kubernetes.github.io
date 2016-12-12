@@ -8,7 +8,7 @@ assignees:
 * TOC
 {:toc}
 
-Ubuntu 16.04 introduced the [Canonical Distribution of Kubernetes](https://jujucharms.com/canonical-kubernetes/), a pure upstream distribution of Kubernetes designed for production usage. Out of the box it comes with the following components on 12 machines:
+Ubuntu 16.04 introduced the [Canonical Distribution of Kubernetes](https://www.ubuntu.com/cloud/kubernetes), a pure upstream distribution of Kubernetes designed for production usage. Out of the box it comes with the following components on 7 machines:
 
 - Kubernetes (automated deployment, operations, and scaling)
      - Three node Kubernetes cluster with one master and two worker nodes.
@@ -20,7 +20,7 @@ Ubuntu 16.04 introduced the [Canonical Distribution of Kubernetes](https://jujuc
 - EasyRSA
      - Performs the role of a certificate authority serving self signed certificates
        to the requesting units of the cluster.
-- Etcd (distributed key value store)
+- ETCD (distributed key value store)
      - Three unit cluster for reliability.
 
 The Juju Kubernetes work is curated by a dedicated team of community members,
@@ -38,20 +38,6 @@ so we can find them.
   - *.jujucharms.com
   - gcr.io 
   - Access to an Ubuntu mirror (public or private)
-
-### On Ubuntu
-
-On your local Ubuntu system:  
-
-```
-sudo add-apt-repository ppa:juju/stable
-sudo apt-get update
-sudo apt-get install juju
-```
-
-If you are using another distro/platform - please consult the
-[getting started guide](https://jujucharms.com/docs/2.0/getting-started-general)
-to install the Juju dependencies for your platform. 
 
 ### Configure Juju to use your cloud provider
 
@@ -82,7 +68,7 @@ juju bootstrap aws/us-east-2
 ```
 or, another example, this time on Azure: 
 
-```shell
+```
 juju bootstrap azure/centralus 
 ```
 
